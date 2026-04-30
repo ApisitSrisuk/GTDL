@@ -10,12 +10,20 @@ export default async function Navbar() {
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-bold text-xl text-primary">
           <Gamepad2 className="w-8 h-8" />
-          <span>GameDaily</span>
+          <span>GTDL</span>
         </Link>
 
         <div className="flex items-center gap-4">
           {session ? (
             <div className="flex items-center gap-4">
+              <a href="/report" className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition hover:bg-white/10">
+                Report
+              </a>
+              {session.user?.role === "admin" && (
+                <a href="/admin/reports" className="rounded-2xl border border-primary/30 bg-primary/10 px-4 py-2 text-sm text-primary transition hover:bg-primary/20">
+                  Admin
+                </a>
+              )}
               <div className="flex items-center gap-2 text-sm">
                 {session.user?.image ? (
                   <img src={session.user.image} alt="" className="w-8 h-8 rounded-full border border-primary" />

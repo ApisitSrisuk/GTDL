@@ -35,14 +35,34 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  games         Game[]
+  id              String    @id @default(cuid())
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  exp             Int?
+  level           Int?
+  role            String    @default("user")
+  accounts        Account[]
+  sessions        Session[]
+  games           Game[]
+  reports         Report[]
+  respondedReports Report[] @relation("ReportResponse")
+}
+
+model Report {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  respondedById  String?
+  respondedBy    User?    @relation("ReportResponse", fields: [respondedById], references: [id])
+  category       String
+  title          String
+  details        String   @db.Text
+  status         String   @default("open")
+  response       String?  @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -55,14 +75,15 @@ model VerificationToken {
 
 // Game Todo List Models
 model Game {
-  id        String   @id @default(cuid())
+  id        String        @id @default(cuid())
   name      String
   imageUrl  String?
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   tasks     Task[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  histories GameHistory[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }
 
 model Task {
@@ -73,4 +94,18 @@ model Task {
   game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model GameHistory {
+  id             String   @id @default(cuid())
+  gameId         String
+  game           Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  date           DateTime
+  isPerfect      Boolean
+  completedTasks Int
+  totalTasks     Int
+  missingTasks   Json?
+  createdAt      DateTime @default(now())
+
+  @@unique([gameId, date])
 }

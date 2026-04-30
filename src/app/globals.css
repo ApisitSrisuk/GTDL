@@ -65,9 +65,10 @@ body {
 }
 
 .gaming-card {
-  @apply bg-card border border-white/5 rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 shadow-2xl;
+  @apply bg-card border border-white/10 rounded-[1.75rem] overflow-hidden transition-all duration-300 shadow-[0_24px_80px_-40px_rgba(0,0,0,0.8)];
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
 }
 
 .gaming-button {
-  @apply bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-medium transition-all active:scale-95 disabled:opacity-50;
+  @apply inline-flex items-center justify-center bg-primary hover:bg-primary/95 text-white px-4 py-3 rounded-2xl font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/10;
 }
